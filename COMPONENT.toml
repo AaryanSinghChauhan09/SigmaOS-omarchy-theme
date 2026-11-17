@@ -3,7 +3,7 @@ name = "SigmaOS-omarchy-theme"
 tier = 2
 stability = "scaffold"
 language = "rust"
-description = "omarchy-theme component"
+description = "Theme for SigmaOS inspired by Omarchy Linux"
 upstream = []
 
 [contract]
