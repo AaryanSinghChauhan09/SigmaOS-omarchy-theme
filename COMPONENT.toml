@@ -12,5 +12,5 @@ depends_on = []
 
 [maturity]
 status = "Implemented"
-test_evidence = "Compiles and passes AAA unit tests"
-next_milestone = "Hardware and runtime integration"
+test_evidence = "cargo test --offline: 7 lib + 1 integration pass; Wallust-style theme engine (Color model, 5 presets, palette->CSS/hyprland/ANSI render, registry+cycle) + working CLI"
+next_milestone = "Wallust wallpaper-sampling backend + live config apply"
