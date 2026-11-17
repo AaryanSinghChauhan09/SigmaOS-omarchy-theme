@@ -20,7 +20,9 @@ fn usage() -> ! {
 fn main() {
     let args: Vec<String> = std::env::args().skip(1).collect();
     if args.is_empty() { usage(); }
+    let state = OmarchyTheme::state_path();
     let mut themes = OmarchyTheme::new();
+    themes.load_state(&state);
     let cmd = args[0].as_str();
     let name = args.get(1).map(|s| s.as_str());
 
@@ -70,8 +72,13 @@ fn main() {
         _ => usage(),
     };
 
-    if let Err(e) = result {
-        eprintln!("omarchy-theme: {e}");
-        exit(1);
+    match result {
+        Ok(()) => {
+            // persist current theme after mutating commands
+            if matches!(cmd, "apply" | "cycle") {
+                if let Err(e) = themes.save_state(&state) { eprintln!("omarchy-theme: warn: save state: {e}"); }
+            }
+        }
+        Err(e) => { eprintln!("omarchy-theme: {e}"); exit(1); }
     }
 }

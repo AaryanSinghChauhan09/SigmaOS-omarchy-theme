@@ -238,6 +238,30 @@ impl OmarchyTheme {
         Some(next)
     }
 
+    /// Persist the current theme name to a state file.
+    pub fn save_state(&self, path: &std::path::Path) -> Result<(), String> {
+        if let Some(p) = path.parent() { std::fs::create_dir_all(p).map_err(|e| e.to_string())?; }
+        match &self.current {
+            Some(n) => std::fs::write(path, format!("{n}\n")).map_err(|e| e.to_string()),
+            None => std::fs::write(path, "").map_err(|e| e.to_string()),
+        }
+    }
+
+    /// Restore current theme from a state file (no-op if missing/unknown).
+    pub fn load_state(&mut self, path: &std::path::Path) {
+        if let Ok(txt) = std::fs::read_to_string(path) {
+            let name = txt.trim();
+            if self.themes.contains_key(name) { self.current = Some(name.to_string()); }
+        }
+    }
+
+    /// Default state path.
+    pub fn state_path() -> std::path::PathBuf {
+        if let Ok(p) = std::env::var("SIGMAOS_THEME_FILE") { return std::path::PathBuf::from(p); }
+        let home = std::env::var("HOME").unwrap_or_else(|_| "/tmp".into());
+        std::path::PathBuf::from(home).join(".config/sigmaos/theme")
+    }
+
     pub fn status_line(&self) -> String {
         match self.current() {
             Some(t) => format!("theme={} variant={} colors={}", t.name, t.variant.label(), t.palette.len()),

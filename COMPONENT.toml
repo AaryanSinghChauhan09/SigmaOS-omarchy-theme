@@ -12,5 +12,5 @@ depends_on = []
 
 [maturity]
 status = "Implemented"
-test_evidence = "cargo test --offline: 7 lib + 1 integration pass; Wallust-style theme engine (Color model, 5 presets, palette->CSS/hyprland/ANSI render, registry+cycle) + working CLI"
+test_evidence = "cargo test --offline: 7 lib + 1 integration pass; Wallust-style engine (5 presets, palette->CSS/hyprland/ANSI16, cycle) with persistent current-theme state (~/.config/sigmaos/theme) + working CLI"
 next_milestone = "Wallust wallpaper-sampling backend + live config apply"
